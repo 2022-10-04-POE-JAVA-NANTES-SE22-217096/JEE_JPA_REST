@@ -8,7 +8,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.cleverdev.model.Auteur;
 import fr.cleverdev.model.Livre;
 
 public class LivreDaoImpl implements LivreDao {
@@ -22,7 +21,7 @@ public class LivreDaoImpl implements LivreDao {
 	
 	private DaoFactory factory;
 	
-	public LivreDaoImpl(DaoFactory factory) {
+	protected LivreDaoImpl(DaoFactory factory) {
 		this.factory = factory;
 	}
 
@@ -42,19 +41,19 @@ public class LivreDaoImpl implements LivreDao {
 			int statut = pst.executeUpdate();
 
             if ( statut == 0 ) {
-                throw new DaoException( "Echec création Livre (aucun ajout)" );
+                throw new DaoException( "Echec crï¿½ation Livre (aucun ajout)" );
             }
             ResultSet rsKeys = pst.getGeneratedKeys();
             if ( rsKeys.next() ) {
                 livre.setId( rsKeys.getLong( 1 ) );
             } else {
-                throw new DaoException( "Echec création Livre (ID non retourné)" );
+                throw new DaoException( "Echec crï¿½ation Livre (ID non retournï¿½)" );
             }
             rsKeys.close();
 			pst.close();
 			
 	    } catch(SQLException ex) {
-	    	throw new DaoException("Echec création Livre",ex);
+	    	throw new DaoException("Echec crï¿½ation Livre",ex);
 	    } finally {
 	    	factory.releaseConnection(con);
 		}
@@ -74,6 +73,8 @@ public class LivreDaoImpl implements LivreDao {
 		      rs  = pst.executeQuery();
 		      if ( rs.next() ) {
 		    	  livre = map(rs);
+		      } else {
+		    	  throw new DaoException("Erreur de recherche BDD Livre");
 		      }
 		      rs.close();
 		      pst.close();
@@ -144,12 +145,12 @@ public class LivreDaoImpl implements LivreDao {
 			int statut = pst.executeUpdate();
 
             if ( statut == 0 ) {
-                throw new DaoException( "Echec mise à jour Livre" );
+                throw new DaoException( "Echec mise ï¿½ jour Livre" );
             }
 			pst.close();
 			
 	    } catch(SQLException ex) {
-	    	throw new DaoException("Echec mise à jour Livre",ex);
+	    	throw new DaoException("Echec mise ï¿½ jour Livre",ex);
 	    } finally {
 	    	factory.releaseConnection(con);
 		}
@@ -157,7 +158,7 @@ public class LivreDaoImpl implements LivreDao {
 	
     /*
      * Mapping (correspondance) entre un ResultSet et un JavaBean
-     * Méthode utilitaire (interne)
+     * Mï¿½thode utilitaire (interne)
      */
     private static Livre map( ResultSet resultSet ) throws SQLException {
         Livre l = new Livre();

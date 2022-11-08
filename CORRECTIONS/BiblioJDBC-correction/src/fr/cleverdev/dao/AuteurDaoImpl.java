@@ -21,7 +21,7 @@ public class AuteurDaoImpl implements AuteurDao {
 	
 	private DaoFactory factory;
 	
-	public AuteurDaoImpl(DaoFactory factory) {
+	protected AuteurDaoImpl(DaoFactory factory) {
 		this.factory = factory;
 	}
 
@@ -32,7 +32,6 @@ public class AuteurDaoImpl implements AuteurDao {
 			con = factory.getConnection();
 			
 			PreparedStatement pst = con.prepareStatement( SQL_INSERT, Statement.RETURN_GENERATED_KEYS );
-
 			pst.setString( 1, auteur.getNom() );
 			pst.setString( 2, auteur.getPrenom() );
 			pst.setString( 3, auteur.getTelephone() );
@@ -41,24 +40,53 @@ public class AuteurDaoImpl implements AuteurDao {
 			int statut = pst.executeUpdate();
 
             if ( statut == 0 ) {
-                throw new DaoException( "Echec création Auteur (aucun ajout)" );
+                throw new DaoException( "Echec crï¿½ation Auteur (aucun ajout)" );
             }
             ResultSet rsKeys = pst.getGeneratedKeys();
             if ( rsKeys.next() ) {
                 auteur.setId( rsKeys.getLong( 1 ) );
             } else {
-                throw new DaoException( "Echec création Auteur (ID non retourné)" );
+                throw new DaoException( "Echec crï¿½ation Auteur (ID non retournï¿½)" );
             }
             rsKeys.close();
 			pst.close();
 			
 	    } catch(SQLException ex) {
-	    	throw new DaoException("Echec création Auteur",ex);
+	    	throw new DaoException("Echec crï¿½ation Auteur",ex);
 	    } finally {
 	    	factory.releaseConnection(con);
 		}
 		
 	}
+	
+	
+	@Override
+	public void update(Auteur auteur) throws DaoException {
+		Connection con=null;
+		try {
+			con = factory.getConnection();
+			
+			PreparedStatement pst = con.prepareStatement( SQL_UPDATE );
+			pst.setString( 1, auteur.getNom() );
+			pst.setString( 2, auteur.getPrenom() );
+			pst.setString( 3, auteur.getTelephone() );
+			pst.setString( 4, auteur.getEmail() );
+			pst.setLong( 5, auteur.getId() );
+
+			int statut = pst.executeUpdate();
+
+            if ( statut == 0 ) {
+                throw new DaoException( "Echec modification Auteur" );
+            }
+			pst.close();
+			
+	    } catch(SQLException ex) {
+	    	throw new DaoException("Echec m Auteur",ex);
+	    } finally {
+	    	factory.releaseConnection(con);
+		}
+	}
+
 
 	@Override
 	public Auteur trouver(long id) throws DaoException {
@@ -73,6 +101,8 @@ public class AuteurDaoImpl implements AuteurDao {
 		      rs  = pst.executeQuery();
 		      if ( rs.next() ) {
 		    	  auteur = map(rs);
+		      } else {
+		    	  throw new DaoException("Erreur de recherche BDD Auteur");
 		      }
 		      rs.close();
 		      pst.close();
@@ -93,7 +123,7 @@ public class AuteurDaoImpl implements AuteurDao {
 			  PreparedStatement pst = con.prepareStatement( SQL_SELECT );
 		      ResultSet         rs  = pst.executeQuery();
 		      while ( rs.next() ) {
-	    	  	listeAuteurs.add( map(rs) );
+		    	  listeAuteurs.add( map(rs) );
 		      }
 		      rs.close();
 		      pst.close();
@@ -124,39 +154,9 @@ public class AuteurDaoImpl implements AuteurDao {
 		}
 		
 	}
-	
-
-	@Override
-	public void update(Auteur auteur) throws DaoException {
-		Connection con=null;
-		try {
-			con = factory.getConnection();
-			
-			PreparedStatement pst = con.prepareStatement( SQL_UPDATE );
-
-			pst.setString( 1, auteur.getNom() );
-			pst.setString( 2, auteur.getPrenom() );
-			pst.setString( 3, auteur.getTelephone() );
-			pst.setString( 4, auteur.getEmail() );
-			pst.setLong( 5, auteur.getId() );
-			
-			int statut = pst.executeUpdate();
-
-            if ( statut == 0 ) {
-                throw new DaoException( "Echec mise à jour Auteur" );
-            }
-			pst.close();
-			
-	    } catch(SQLException ex) {
-	    	throw new DaoException("Echec mise à jour Auteur",ex);
-	    } finally {
-	    	factory.releaseConnection(con);
-		}
-	}
-	
     /*
      * Mapping (correspondance) entre un ResultSet et un JavaBean
-     * Méthode utilitaire (interne)
+     * Mï¿½thode utilitaire (interne)
      */
     private static Auteur map( ResultSet resultSet ) throws SQLException {
         Auteur a = new Auteur();
@@ -167,5 +167,7 @@ public class AuteurDaoImpl implements AuteurDao {
         a.setEmail( resultSet.getString( "email" ) );
         return a;
     }
+
+
 
 }
