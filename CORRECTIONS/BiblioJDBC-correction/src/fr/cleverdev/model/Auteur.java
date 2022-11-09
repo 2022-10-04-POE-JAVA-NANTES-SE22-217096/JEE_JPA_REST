@@ -31,7 +31,7 @@ public class Auteur {
 		this.nom = nom;
 	}
 	public String getPrenom() {
-		return prenom;
+		return this.prenom;
 	}
 	public void setPrenom(String prenom) {
 		this.prenom = prenom;
@@ -54,5 +54,17 @@ public class Auteur {
 		return getId() + " : " + getNom() + " " + getPrenom() + " - " + getTelephone() + " / " + getEmail();
 	}
 
+
+	@Override
+	public boolean equals(Object obj) {
+		if(((Auteur) obj).getId() != this.id) {
+			return false;
+		}
+		
+		return true;
+	}
+	
+	
+	
 
 }

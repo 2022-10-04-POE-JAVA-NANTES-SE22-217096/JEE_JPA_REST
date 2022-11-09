@@ -4,6 +4,7 @@ import java.util.List;
 
 import fr.cleverdev.model.Livre;
 
+
 public interface LivreDao {
 
 	void         creer( Livre livre ) throws DaoException;

@@ -5,32 +5,35 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DaoFactory {
- private String url;
- private String username;
- private String passwd;
- private Connection con = null;
-
- private static DaoFactory instanceSingleton = null;
  
-	 // Constructeur privé (usage limité à  la classe elle même : Cf. "getInstance()")
+	 private String url;
+	 private String username;
+	 private String passwd;
+	 private Connection con = null;
+	
+	 private static DaoFactory instanceSingleton = null;
+ 
+	 // Constructeur privï¿½ (usage limitï¿½ ï¿½ la classe elle mï¿½me : Cf. "getInstance()")
 	 private DaoFactory(String url, String username, String passwd) {
 		this.url = url;
 		this.username = username;
 		this.passwd = passwd;
 	}
 	
+	 
 	public static DaoFactory getInstance() {
 		if ( DaoFactory.instanceSingleton == null ) {
 			try {
-			      Class.forName("org.postgresql.Driver");
-			      DaoFactory.instanceSingleton = new DaoFactory("jdbc:postgresql://localhost/biblio","postgres","12345");
-		  } catch(ClassNotFoundException e) {
-			  e.printStackTrace();
-		  }
+			      Class.forName("com.mysql.jdbc.Driver");
+			      //DaoFactory.instanceSingleton = new DaoFactory("jdbc:postgresql://localhost/biblio","postgres","12345");
+			      DaoFactory.instanceSingleton = new DaoFactory("jdbc:mysql://localhost/biblio","root","");
+			} catch(ClassNotFoundException e) {
+				e.printStackTrace();
+			}
 		}
 		return DaoFactory.instanceSingleton;
-	 
 	}
+	
 	
 	public AuteurDao getAuteurDao() {
 		return new AuteurDaoImpl( this );
@@ -47,8 +50,8 @@ public class DaoFactory {
 		return this.con;
 	}
 	
-	// cette méthode prend une connection en parametre en présagent que l'on pourrait en utiliser plusieurs
-	// mais par construction actuellement la seule connection existante est stockée dans "this.con"
+	// cette mï¿½thode prend une connection en parametre en prï¿½sagent que l'on pourrait en utiliser plusieurs
+	// mais par construction actuellement la seule connection existante est stockï¿½e dans "this.con"
 	void releaseConnection( Connection connectionRendue ) {
 		if (this.con==null) {
 			return;
@@ -59,7 +62,7 @@ public class DaoFactory {
 				this.con = null;
 			}
 		} catch (SQLException e) {
-			con = null;
+			this.con = null;
 		}
 	}
 

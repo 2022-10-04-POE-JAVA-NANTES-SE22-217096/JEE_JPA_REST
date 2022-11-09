@@ -59,9 +59,10 @@ public class Livre {
 		this.categorie = categorie;
 	}
 
+
 	@Override
 	public String toString() {
-		return getId() + " : " + getTitre() + " de " + getAuteur().getPrenom() + " " + getAuteur().getNom() + " / " + getNbPages() + " pages / Catégorie : " + getCategorie();
+		return getId() + " : " + getTitre() + " de " + getAuteur().getPrenom() + " " + getAuteur().getNom() + " / " + getNbPages() + " pages / CatÃ©gorie : " + getCategorie();
 	}
 	
 	
