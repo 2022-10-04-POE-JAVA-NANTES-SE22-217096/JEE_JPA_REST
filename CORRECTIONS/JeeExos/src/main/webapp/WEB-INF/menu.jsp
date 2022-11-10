@@ -7,5 +7,6 @@
 	<li><a href="<c:url value="/exo1" />">Exo 1</a></li>
 	<li><a href="<c:url value="/exo2" />">Exo 2</a></li>
 	<li><a href="<c:url value="/exo3" />">Exo 3</a></li>
+	<li><a href="<c:url value="/exo4" />">Exo 4</a></li>
 	<li><a href="<c:url value="/demoJSTL" />">Demo JSTL</a></li>
 </ul>
