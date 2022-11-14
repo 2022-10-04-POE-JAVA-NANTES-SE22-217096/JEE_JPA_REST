@@ -1,0 +1,89 @@
+html, body {
+	height: 100%;
+	overflow: hidden;
+}
+
+body {
+	background-image: url("biblio.jpg");
+	background-size: cover;
+	background-position: center;
+  	background-repeat: no-repeat;
+}
+
+.erreur {
+	color: red;
+}
+
+/* MENU */
+.menu {
+	max-width: 800px;
+	margin: auto;
+	padding: 10px;
+	border: thick solid #5CB1AF;
+}
+.menu h1 {
+	text-align: center;
+}
+.menu ul {
+  max-width: 450px;
+  list-style-type: none;
+  margin: auto;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+.menu li {
+  float: left;
+  width: 150px;
+}
+
+.menu li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.menu li a:hover {
+  background-color: #5CB1AF;
+}
+
+.menu li .active {
+  background-color: #5CB1AF;
+}
+/* END MENU */
+
+
+/* VIEW */
+.view {
+	text-align: center;
+}
+.view table {
+	margin: auto;
+	margin-top: 50px;
+	border: solid;
+}
+.view td {
+	padding: 10px;
+	border: solid;
+}
+.view .pair {
+	background-color: white;
+}
+
+.view .impair {
+	background-color: #5CB1AF;
+}
+
+.view button {
+	margin-top: 50px;
+}
+
+.view fieldset {
+	max-width: 800px;
+	margin: auto;
+}
+/* END VIEW */
