@@ -33,7 +33,9 @@
 							<tr class="${ infoBoucle.index % 2 == 0 ? 'pair' : 'impair' }">
 								<td><c:out value="${ auteur.nom}" /></td>
 								<td><c:out value="${ auteur.prenom}" /></td>
-								<td>PAS D'ACTIONS</td>
+								<td>
+									<a href="<c:url value="/detailsAuteur"><c:param name="id" value="${ auteur.id}" /></c:url>">Voir</a>
+								</td>
 							</tr>
 						</c:forEach>
 					</tbody>

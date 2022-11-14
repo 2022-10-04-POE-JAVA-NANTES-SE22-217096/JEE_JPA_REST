@@ -1,7 +1,6 @@
 package fr.cleverdev.servlets;
 
 import java.io.IOException;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,31 +12,28 @@ import fr.cleverdev.dao.DaoException;
 import fr.cleverdev.dao.DaoFactory;
 
 /**
- * Servlet implementation class ListeAuteurs
+ * Servlet implementation class DetailsAuteur
  */
-@WebServlet("/listeAuteurs")
-public class ListeAuteurs extends HttpServlet {
+@WebServlet("/detailsAuteur")
+public class DetailsAuteur extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+       
 	private AuteurDao auteurDao;
 
-    public ListeAuteurs() {
+    public DetailsAuteur() {
         super();
         auteurDao = DaoFactory.getInstance().getAuteurDao();
     }
 
-
-	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		
 		try {
-			request.setAttribute("auteurs", auteurDao.lister());
+			long id = Long.parseLong(request.getParameter("id"));
+			request.setAttribute("auteur", auteurDao.trouver(id));
 		} catch (DaoException e) {
 			e.printStackTrace();
 		}
-
-		this.getServletContext().getRequestDispatcher("/WEB-INF/listeAuteurs.jsp").forward(request, response);
-
+		this.getServletContext().getRequestDispatcher("/WEB-INF/detailsAuteur.jsp").forward(request, response);
 	}
 
 
