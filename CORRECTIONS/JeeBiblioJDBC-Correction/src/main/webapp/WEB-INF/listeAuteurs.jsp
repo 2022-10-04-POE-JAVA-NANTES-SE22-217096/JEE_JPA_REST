@@ -15,6 +15,8 @@
 
 	<div class="view">
 		
+		<a href="<c:url value="/ajouterAuteur" />"><button>Ajouter un auteur</button></a>
+		
 		<c:choose>
 			<c:when test="${ empty auteurs }">
 				<p>Aucun auteur trouvé...</p>
