@@ -14,7 +14,7 @@ public interface LivreDao {
     List<Livre> lister() throws DaoException;
 
     void         supprimer( long id ) throws DaoException;
-    
+
     void         update( Livre livre ) throws DaoException;
 
 }

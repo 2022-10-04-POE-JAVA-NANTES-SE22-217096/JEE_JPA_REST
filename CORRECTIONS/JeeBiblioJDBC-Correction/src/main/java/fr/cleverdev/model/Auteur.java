@@ -7,17 +7,17 @@ public class Auteur {
     private String prenom;
     private String telephone;
     private String email;
-    
-    public Auteur() { 
+
+    public Auteur() {
     }
-    
-    public Auteur(String nom, String prenom, String telephone, String email) { 
+
+    public Auteur(String nom, String prenom, String telephone, String email) {
     	this.nom = nom;
     	this.prenom = prenom;
     	this.telephone = telephone;
     	this.email = email;
     }
-    
+
 	public Long getId() {
 		return id;
 	}
@@ -60,11 +60,11 @@ public class Auteur {
 		if(((Auteur) obj).getId() != this.id) {
 			return false;
 		}
-		
+
 		return true;
 	}
-	
-	
-	
+
+
+
 
 }

@@ -11,16 +11,16 @@ import java.util.List;
 import fr.cleverdev.model.Auteur;
 
 public class AuteurDaoImpl implements AuteurDao {
-	
+
 	private static final String SQL_INSERT       = "INSERT INTO auteur(nom,prenom,telephone,email) VALUES(?,?,?,?)";
 	private static final String SQL_SELECT       = "SELECT id,nom,prenom,telephone,email FROM auteur";
     private static final String SQL_SELECT_BY_ID = "SELECT id,nom,prenom,telephone,email FROM auteur WHERE id = ?";
 	private static final String SQL_DELETE_BY_ID = "DELETE FROM auteur WHERE id = ? ";
-	
+
 	private static final String SQL_UPDATE = "UPDATE auteur SET nom=?, prenom=?, telephone=?, email=? WHERE id = ?";
-	
+
 	private DaoFactory factory;
-	
+
 	protected AuteurDaoImpl(DaoFactory factory) {
 		this.factory = factory;
 	}
@@ -30,13 +30,13 @@ public class AuteurDaoImpl implements AuteurDao {
 		Connection con=null;
 		try {
 			con = factory.getConnection();
-			
+
 			PreparedStatement pst = con.prepareStatement( SQL_INSERT, Statement.RETURN_GENERATED_KEYS );
 			pst.setString( 1, auteur.getNom() );
 			pst.setString( 2, auteur.getPrenom() );
 			pst.setString( 3, auteur.getTelephone() );
 			pst.setString( 4, auteur.getEmail() );
-			
+
 			int statut = pst.executeUpdate();
 
             if ( statut == 0 ) {
@@ -50,22 +50,22 @@ public class AuteurDaoImpl implements AuteurDao {
             }
             rsKeys.close();
 			pst.close();
-			
+
 	    } catch(SQLException ex) {
 	    	throw new DaoException("Echec cr�ation Auteur",ex);
 	    } finally {
 	    	factory.releaseConnection(con);
 		}
-		
+
 	}
-	
-	
+
+
 	@Override
 	public void update(Auteur auteur) throws DaoException {
 		Connection con=null;
 		try {
 			con = factory.getConnection();
-			
+
 			PreparedStatement pst = con.prepareStatement( SQL_UPDATE );
 			pst.setString( 1, auteur.getNom() );
 			pst.setString( 2, auteur.getPrenom() );
@@ -79,7 +79,7 @@ public class AuteurDaoImpl implements AuteurDao {
                 throw new DaoException( "Echec modification Auteur" );
             }
 			pst.close();
-			
+
 	    } catch(SQLException ex) {
 	    	throw new DaoException("Echec m Auteur",ex);
 	    } finally {
@@ -116,7 +116,7 @@ public class AuteurDaoImpl implements AuteurDao {
 
 	@Override
 	public List<Auteur> lister() throws DaoException {
-		List<Auteur> listeAuteurs = new ArrayList<Auteur>();
+		List<Auteur> listeAuteurs = new ArrayList<>();
 		Connection   con=null;
 		try {
 			  con = factory.getConnection();
@@ -152,7 +152,7 @@ public class AuteurDaoImpl implements AuteurDao {
 	    } finally {
 	    	factory.releaseConnection(con);
 		}
-		
+
 	}
     /*
      * Mapping (correspondance) entre un ResultSet et un JavaBean

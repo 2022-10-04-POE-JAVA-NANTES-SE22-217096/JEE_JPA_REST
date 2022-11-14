@@ -16,5 +16,5 @@ public interface AuteurDao {
 
     void         update( Auteur auteur ) throws DaoException;
 
-    
+
 }

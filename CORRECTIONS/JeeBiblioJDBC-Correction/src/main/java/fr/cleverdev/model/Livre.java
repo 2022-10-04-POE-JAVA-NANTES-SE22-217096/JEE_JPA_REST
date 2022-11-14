@@ -7,11 +7,11 @@ public class Livre {
 	private String titre;
 	private int nbPages;
 	private String categorie;
-	
+
 	public Livre() {
-		
+
 	}
-	
+
 	public Livre(Auteur auteur, String titre, int nbPages, String categorie) {
 		this.auteur = auteur;
 		this.titre = titre;
@@ -64,6 +64,6 @@ public class Livre {
 	public String toString() {
 		return getId() + " : " + getTitre() + " de " + getAuteur().getPrenom() + " " + getAuteur().getNom() + " / " + getNbPages() + " pages / Catégorie : " + getCategorie();
 	}
-	
-	
+
+
 }
