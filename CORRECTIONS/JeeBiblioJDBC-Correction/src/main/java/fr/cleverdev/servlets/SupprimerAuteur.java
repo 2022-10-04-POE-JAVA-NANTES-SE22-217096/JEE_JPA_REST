@@ -12,16 +12,14 @@ import fr.cleverdev.dao.AuteurDao;
 import fr.cleverdev.dao.DaoException;
 import fr.cleverdev.dao.DaoFactory;
 
-/**
- * Servlet implementation class DetailsAuteur
- */
-@WebServlet("/detailsAuteur")
-public class DetailsAuteur extends HttpServlet {
+
+@WebServlet("/supprimerAuteur")
+public class SupprimerAuteur extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	private AuteurDao auteurDao;
 
-    public DetailsAuteur() {
+    public SupprimerAuteur() {
         super();
         auteurDao = DaoFactory.getInstance().getAuteurDao();
     }
@@ -31,11 +29,12 @@ public class DetailsAuteur extends HttpServlet {
 
 		try {
 			long id = Long.parseLong(request.getParameter("id"));
-			request.setAttribute("auteur", auteurDao.trouver(id));
+			auteurDao.supprimer(id);
 		} catch (DaoException e) {
 			e.printStackTrace();
 		}
-		this.getServletContext().getRequestDispatcher("/WEB-INF/detailsAuteur.jsp").forward(request, response);
+		
+		response.sendRedirect( request.getContextPath() + "/listeAuteurs" );
 	}
 
 
