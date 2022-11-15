@@ -54,6 +54,9 @@ public class ModifierAuteur extends HttpServlet {
 			auteur.setEmail(email);
 			
 			auteurDao.update(auteur);
+			
+			//Ajout d'un élément dans la session
+			request.getSession().setAttribute("confirmMessage", "L'auteur a bien été modifié !");
 		} catch (DaoException e) {
 			e.printStackTrace();
 		}

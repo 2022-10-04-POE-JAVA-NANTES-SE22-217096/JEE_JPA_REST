@@ -58,6 +58,9 @@ public class ModifierLivre extends HttpServlet {
 			livre.setAuteur(auteurDao.trouver(idAuteur));
 			
 			livreDao.creer(livre);
+			
+			//Ajout d'un élément dans la session
+			request.getSession().setAttribute("confirmMessage", "Le livre a bien été modifié !");
 		} catch (DaoException e) {
 			e.printStackTrace();
 		}

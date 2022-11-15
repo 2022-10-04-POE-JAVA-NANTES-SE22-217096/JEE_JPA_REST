@@ -35,9 +35,36 @@ public class ListeAuteurs extends HttpServlet {
 		} catch (DaoException e) {
 			e.printStackTrace();
 		}
+		
+		
+		//Exemple Cookie (stocké côté client)
+		//Création du cookie
+		/*Cookie cookie = new Cookie("nomCookie", "valeurCookie"); //Création du cookie avec 1er paramètre qui est la clé et second la valeur
+		cookie.setMaxAge(3600); //Fixer la durée d'expiration du cookie à 3600 secondes soit 1h
+		response.addCookie(cookie); //Ajout du cookie à la réponse
+		//Récupération du cookie
+		if(request.getCookies() != null) {
+			for(Cookie c : request.getCookies()) {
+				if(c.getName().equals("nomCookie")) {
+					System.out.println(c.getValue());
+				}
+			}
+		}*/
+		
+		
+		//Exemple Session
+		//Ajout d'un élément dans la session
+		/*request.getSession().setAttribute("confirmMessage", "L'auteur a bien été modifié !");
+		//Lecture de la session
+		if(request.getSession().getAttribute("confirmMessage") != null) {//On verifie si l'attribut existe
+			String confirmMessage = request.getSession().getAttribute("confirmMessage").toString();
+			request.setAttribute("confirmMessage", confirmMessage);
+			request.getSession().removeAttribute("confirmMessage");//On efface l'attribut de la session
+		}*/
 
 		this.getServletContext().getRequestDispatcher("/WEB-INF/listeAuteurs.jsp").forward(request, response);
 
+		request.getSession().removeAttribute("confirmMessage");
 	}
 
 

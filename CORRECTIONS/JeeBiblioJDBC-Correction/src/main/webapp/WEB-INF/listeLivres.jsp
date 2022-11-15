@@ -49,6 +49,8 @@
 			</c:otherwise>
 		</c:choose>
 		
+		<span>${ sessionScope.confirmMessage }</span>
+				
 	</div>
 </body>
 </html>

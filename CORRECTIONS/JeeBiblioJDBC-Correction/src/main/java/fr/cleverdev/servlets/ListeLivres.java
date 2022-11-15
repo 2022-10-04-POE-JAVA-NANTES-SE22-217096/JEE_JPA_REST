@@ -37,6 +37,8 @@ public class ListeLivres extends HttpServlet {
 		}
 
 		this.getServletContext().getRequestDispatcher("/WEB-INF/listeLivres.jsp").forward(request, response);
+		
+		request.getSession().removeAttribute("confirmMessage");
 
 	}
 

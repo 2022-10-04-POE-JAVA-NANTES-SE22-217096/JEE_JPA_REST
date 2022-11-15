@@ -30,6 +30,9 @@ public class SupprimerLivre extends HttpServlet {
 		try {
 			long id = Long.parseLong(request.getParameter("id"));
 			livreDao.supprimer(id);
+			
+			//Ajout d'un élément dans la session
+			request.getSession().setAttribute("confirmMessage", "L'auteur a bien été supprimé !");
 		} catch (DaoException e) {
 			e.printStackTrace();
 		}

@@ -46,6 +46,8 @@ public class AjouterAuteur extends HttpServlet {
 		
 		try {
 			auteurDao.creer(auteur);
+			
+			request.getSession().setAttribute("confirmMessage", "L'auteur a bien été ajouté !");
 		} catch (DaoException e) {
 			e.printStackTrace();
 		}
