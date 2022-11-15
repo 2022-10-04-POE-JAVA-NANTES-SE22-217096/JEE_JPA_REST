@@ -1,6 +1,9 @@
 package fr.cleverdev.servlets;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,6 +14,7 @@ import fr.cleverdev.dao.LivreDao;
 import fr.cleverdev.dao.AuteurDao;
 import fr.cleverdev.dao.DaoException;
 import fr.cleverdev.dao.DaoFactory;
+import fr.cleverdev.model.Auteur;
 import fr.cleverdev.model.Livre;
 
 /**
@@ -42,27 +46,67 @@ public class AjouterLivre extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		Long idAuteur = Long.parseLong(request.getParameter("auteurLivre"));
+		Map<String, String> erreurs = new HashMap<String, String>();
+		
 		String titre = request.getParameter("titreLivre");
-		int nbPages = Integer.parseInt(request.getParameter("nbPagesLivre"));
 		String categorie = request.getParameter("categorieLivre");
-	
-		try {
-			Livre livre = new Livre();
-			livre.setTitre(titre);
-			livre.setNbPages(nbPages);
-			livre.setCategorie(categorie);
-			livre.setAuteur(auteurDao.trouver(idAuteur));
-			
-			livreDao.creer(livre);
-			
-			//Ajout d'un élément dans la session
-			request.getSession().setAttribute("confirmMessage", "Le livre a bien été ajouté !");
-		} catch (DaoException e) {
-			e.printStackTrace();
+		
+		if(titre != null) {
+			if(titre.length() < 2 || titre.length() > 50) {
+				erreurs.put("titreLivre", "Un titre doit contenir entre 2 et 50 caractères.");
+			}
+		} else {
+			erreurs.put("titreLivre", "Merci d'entrer un titre.");
 		}
 		
-		response.sendRedirect( request.getContextPath() + "/listeLivres" );		
+		if(categorie != null) {
+			if(categorie.length() > 20) {
+				erreurs.put("categorieLivre", "Une catégorie doit avoir au maximum 20 caractères.");
+			}
+		}
+		
+		int nbPages = 0;
+		try {
+			nbPages = Integer.parseInt(request.getParameter("nbPagesLivre"));
+		} catch (NumberFormatException e) {
+			erreurs.put("nbPagesLivre", "Merci d'entre un nombre de page (valeur numérique).");
+		}
+
+		Auteur auteur = null;
+		try {
+			long idAuteur = Long.parseLong(request.getParameter("auteurLivre"));
+			auteur = auteurDao.trouver(idAuteur);
+		} catch (DaoException | NumberFormatException e) {
+			erreurs.put("auteurLivre", "Erreur l'auteur n'existe pas.");
+		}
+		
+		Livre livre = new Livre();
+		livre.setTitre(titre);
+		livre.setNbPages(nbPages);
+		livre.setCategorie(categorie);
+		livre.setAuteur(auteur);
+		
+		if(erreurs.isEmpty()) {
+			try {
+				livreDao.creer(livre);
+				
+				request.getSession().setAttribute("confirmMessage", "Le livre a bien été ajouté !");
+			} catch (DaoException e) {
+				e.printStackTrace();
+			}
+			
+			response.sendRedirect( request.getContextPath() + "/listeLivres" );
+		} else {
+			try {
+				request.setAttribute("auteurs", auteurDao.lister());
+			} catch (DaoException e) {
+				e.printStackTrace();
+			}
+			request.setAttribute("livre", livre);
+			request.setAttribute("erreurs", erreurs);
+			
+			this.getServletContext().getRequestDispatcher("/WEB-INF/ajouterLivre.jsp").forward(request, response);
+		}		
 	}
 
 }
