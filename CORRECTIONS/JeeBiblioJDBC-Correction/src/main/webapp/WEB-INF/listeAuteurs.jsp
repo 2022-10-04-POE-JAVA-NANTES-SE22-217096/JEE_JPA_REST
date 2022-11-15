@@ -38,6 +38,8 @@
 								<td>
 									<a href="<c:url value="/detailsAuteur"><c:param name="id" value="${ auteur.id}" /></c:url>">Voir</a>
 									|
+									<a href="<c:url value="/modifierAuteur"><c:param name="id" value="${ auteur.id}" /></c:url>">Modifier</a>
+									|
 									<a href="<c:url value="/supprimerAuteur"><c:param name="id" value="${ auteur.id}" /></c:url>">Supprimer</a>
 								</td>
 							</tr>
