@@ -45,7 +45,6 @@ public class ModifierAuteur extends HttpServlet {
 		
 		Map<String, String> erreurs = new HashMap<String, String>();
 		
-		long id = Long.parseLong(request.getParameter("id"));
 		String nom = request.getParameter("nomAuteur");
 		String prenom = request.getParameter("prenomAuteur");
 		String telephone = request.getParameter("telephoneAuteur");
@@ -88,8 +87,9 @@ public class ModifierAuteur extends HttpServlet {
 		
 		Auteur auteur = new Auteur();
 		try {
+			long id = Long.parseLong(request.getParameter("id"));
 			auteur = auteurDao.trouver(id);
-		}catch (DaoException e) {
+		}catch (DaoException | NumberFormatException e) {
 			e.printStackTrace();
 			erreurs.put("auteur", "Erreur l'auteur n'existe pas...");
 		}
