@@ -19,22 +19,8 @@
 		
 			<fieldset>
 				<legend>Modifier un auteur</legend>
-				
-				<label for="nomAuteur">Nom : </label>
-				<input id="nomAuteur" name="nomAuteur" type="text" value="<c:out value="${ auteur.nom }" />" />
-				<br/>
-				
-				<label for="prenomAuteur">Prénom : </label>
-				<input id="prenomAuteur" name="prenomAuteur" type="text" value="<c:out value="${ auteur.prenom }" />" />
-				<br/>
-				
-				<label for="telephoneAuteur">Téléphone : </label>
-				<input id="telephoneAuteur" name="telephoneAuteur" type="text" value="<c:out value="${ auteur.telephone }" />" />
-				<br/>
-				
-				<label for="emailAuteur">Email : </label>
-				<input id="emailAuteur" name="emailAuteur" type="text" value="<c:out value="${ auteur.email }" />" />
-				<br/>
+		
+				<c:import url="/WEB-INF/auteur_form.jsp" />
 			</fieldset>
 			
 			<input type="submit" value="Valider" />

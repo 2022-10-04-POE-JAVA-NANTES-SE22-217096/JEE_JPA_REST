@@ -16,25 +16,11 @@
 	<div class="view">
 		
 		<form method="POST" action="<c:url value="/ajouterAuteur" />">
-		
+			
 			<fieldset>
-				<legend>Créer un auteur</legend>
-				
-				<label for="nomAuteur">Nom : </label>
-				<input id="nomAuteur" name="nomAuteur" type="text" />
-				<br/>
-				
-				<label for="prenomAuteur">Prénom : </label>
-				<input id="prenomAuteur" name="prenomAuteur" type="text" />
-				<br/>
-				
-				<label for="telephoneAuteur">Téléphone : </label>
-				<input id="telephoneAuteur" name="telephoneAuteur" type="text" />
-				<br/>
-				
-				<label for="emailAuteur">Email : </label>
-				<input id="emailAuteur" name="emailAuteur" type="text" />
-				<br/>
+				<legend>Ajouter un auteur</legend>
+		
+				<c:import url="/WEB-INF/auteur_form.jsp" />
 			</fieldset>
 			
 			<input type="submit" value="Valider" />

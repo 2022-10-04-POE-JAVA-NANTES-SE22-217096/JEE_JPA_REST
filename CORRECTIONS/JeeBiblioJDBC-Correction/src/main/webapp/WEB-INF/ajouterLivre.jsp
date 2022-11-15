@@ -20,25 +20,8 @@
 			<fieldset>
 				<legend>Créer un livre</legend>
 				
-				<label for="auteurLivre">Auteur : </label>
-				<select id="auteurLivre" name="auteurLivre">
-					<c:forEach items="${ auteurs }" var="auteur">
-						<option value="${ auteur.id}"><c:out value="${ auteur.prenom}" /> <c:out value="${ auteur.nom}" /></option>
-					</c:forEach>
-				</select>
-				<br/>
-				
-				<label for="titreLivre">Titre : </label>
-				<input id="titreLivre" name="titreLivre" type="text" />
-				<br/>
-				
-				<label for="nbPagesLivre">Nombre de pages : </label>
-				<input id="nbPagesLivre" name="nbPagesLivre" type="number" />
-				<br/>
-				
-				<label for="categorieLivre">Email : </label>
-				<input id="categorieLivre" name="categorieLivre" type="text" />
-				<br/>
+				<c:import url="/WEB-INF/livre_form.jsp" />
+
 			</fieldset>
 			
 			<input type="submit" value="Valider" />
