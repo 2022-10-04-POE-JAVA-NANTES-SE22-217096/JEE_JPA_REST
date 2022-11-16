@@ -26,6 +26,7 @@ public class DaoFactory {
 	public static DaoFactory getInstance() {
 		if ( DaoFactory.instanceSingleton == null ) {
 			try {
+				
 				  String dbType = Configuration.getConfig("db_type");
 				  String dbDriver = Configuration.getConfig("db_driver");
 				  String dbHost = Configuration.getConfig("db_host");
