@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import utils.Configuration;
+
 public class DaoFactory {
 
 	 private String url;
@@ -24,9 +26,15 @@ public class DaoFactory {
 	public static DaoFactory getInstance() {
 		if ( DaoFactory.instanceSingleton == null ) {
 			try {
-			      Class.forName("com.mysql.jdbc.Driver");
-			      //DaoFactory.instanceSingleton = new DaoFactory("jdbc:postgresql://localhost/biblio","postgres","12345");
-			      DaoFactory.instanceSingleton = new DaoFactory("jdbc:mysql://localhost/biblio","root","");
+				  String dbType = Configuration.getConfig("db_type");
+				  String dbDriver = Configuration.getConfig("db_driver");
+				  String dbHost = Configuration.getConfig("db_host");
+				  String dbName = Configuration.getConfig("db_database");
+				  String dbUsername = Configuration.getConfig("db_username");
+				  String dbPassword = Configuration.getConfig("db_password");
+				
+			      Class.forName(dbDriver);
+			      DaoFactory.instanceSingleton = new DaoFactory("jdbc:"+dbType+"://"+dbHost+"/"+dbName, dbUsername, dbPassword);
 			} catch(ClassNotFoundException e) {
 				e.printStackTrace();
 			}
