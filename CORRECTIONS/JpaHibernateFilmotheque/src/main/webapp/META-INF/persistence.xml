@@ -7,7 +7,10 @@
     <persistence-unit name="filmotheque">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         
-
+        <class>fr.cleverdev.models.Realisateur</class>
+        <class>fr.cleverdev.models.Scenario</class>
+        <class>fr.cleverdev.models.Acteur</class>
+        <class>fr.cleverdev.models.Film</class>
         
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
@@ -15,7 +18,6 @@
             <property name="javax.persistence.jdbc.user" value="root" />
             <property name="javax.persistence.jdbc.password" value="" />
             
-            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
             <property name="hibernate.hbm2ddl.auto" value="create"/>
             
             <property name="hibernate.enable_lazy_load_no_trans" value="true"/>

@@ -18,22 +18,22 @@ public class Auteur {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long   id;
-	
+
 	@Column(nullable = false, length = 20)
     private String nom;
-    
+
 	@Column(length = 20)
     private String prenom;
-    
+
 	@Column(nullable = false, length = 10)
     private String telephone;
-    
+
 	@Column(length =  60)
     private String email;
-	
+
 	@OneToMany(mappedBy = "auteur")
-	private List<Livre> livres = new ArrayList<Livre>();
-	
+	private List<Livre> livres = new ArrayList<>();
+
 
     public Auteur() {
     }
@@ -75,7 +75,7 @@ public class Auteur {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+
 	public List<Livre> getLivres() {
 		return livres;
 	}

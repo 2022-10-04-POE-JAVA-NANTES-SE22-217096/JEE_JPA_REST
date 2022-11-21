@@ -24,29 +24,29 @@ public class Livre {
 	@Id
 	@GeneratedValue( strategy=GenerationType.AUTO )
 	private Long id;
-	
+
 	@Column(nullable = false, length = 50)
 	private String titre;
-	
+
 	@Column(nullable = false)
 	private int nbPages;
-	
+
 	@Column(length = 20)
 	private String categorie;
-	
+
 	@ManyToOne( fetch=FetchType.LAZY, cascade=CascadeType.ALL )
 	private Auteur auteur;
-	
+
 	@OneToOne( fetch=FetchType.LAZY )
 	private Couverture couverture;
-	
+
 	@ManyToMany(cascade=CascadeType.ALL)
 	@JoinTable(
 		name="livre_genre",
 		joinColumns = { @JoinColumn(name="livre_id") },
 		inverseJoinColumns = {@JoinColumn(name="genre_id") }
 	)
-	private List<Genre> genres = new ArrayList<Genre>();
+	private List<Genre> genres = new ArrayList<>();
 
 	public Livre() {
 
@@ -98,7 +98,7 @@ public class Livre {
 	public void setCategorie(String categorie) {
 		this.categorie = categorie;
 	}
-	
+
 	public Couverture getCouverture() {
 		return couverture;
 	}
@@ -106,8 +106,8 @@ public class Livre {
 	public void setCouverture(Couverture couverture) {
 		this.couverture = couverture;
 	}
-	
-	
+
+
 
 	public List<Genre> getGenres() {
 		return genres;

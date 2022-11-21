@@ -12,8 +12,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "genre")
-public class Genre {
+@Table(name = "acteur")
+public class Acteur {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,16 +22,21 @@ public class Genre {
 	@Column(nullable = false)
     private String nom;
 
-	@ManyToMany( mappedBy="genres" )
-	private List<Livre> livres = new ArrayList<>();
+	@Column(nullable = false)
+    private String prenom;
 
-    public Genre() {
+    private int age;
+
+	@ManyToMany( mappedBy="acteurs" )
+	private List<Film> films = new ArrayList<>();
+
+    public Acteur() {
     }
-
 
 	public Long getId() {
 		return id;
 	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}
@@ -40,32 +45,32 @@ public class Genre {
 		return nom;
 	}
 
-
 	public void setNom(String nom) {
 		this.nom = nom;
 	}
 
-
-	public List<Livre> getLivres() {
-		return livres;
+	public String getPrenom() {
+		return prenom;
 	}
 
-
-	public void setLivres(List<Livre> livres) {
-		this.livres = livres;
+	public void setPrenom(String prenom) {
+		this.prenom = prenom;
 	}
 
-
-	@Override
-	public boolean equals(Object obj) {
-		if(((Genre) obj).getId() != this.id) {
-			return false;
-		}
-
-		return true;
+	public int getAge() {
+		return age;
 	}
 
+	public void setAge(int age) {
+		this.age = age;
+	}
 
+	public List<Film> getFilms() {
+		return films;
+	}
 
+	public void setFilms(List<Film> films) {
+		this.films = films;
+	}
 
 }

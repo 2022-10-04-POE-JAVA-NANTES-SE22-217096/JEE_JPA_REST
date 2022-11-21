@@ -9,62 +9,55 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "couverture")
-public class Couverture {
+@Table(name = "scenario")
+public class Scenario {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long   id;
 
 	@Column(nullable = false)
+    private String titre;
+
+	@Column(nullable = false)
     private String description;
 
-	@OneToOne( mappedBy="couverture" )
-	private Livre livre;
+	@OneToOne( mappedBy="scenario" )
+	private Film film;
 
-    public Couverture() {
+    public Scenario() {
     }
-
 
 	public Long getId() {
 		return id;
 	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}
 
+	public String getTitre() {
+		return titre;
+	}
 
+	public void setTitre(String titre) {
+		this.titre = titre;
+	}
 
 	public String getDescription() {
 		return description;
 	}
 
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-
-	public Livre getLivre() {
-		return livre;
+	public Film getFilm() {
+		return film;
 	}
 
-
-	public void setLivre(Livre livre) {
-		this.livre = livre;
+	public void setFilm(Film film) {
+		this.film = film;
 	}
-
-
-	@Override
-	public boolean equals(Object obj) {
-		if(((Couverture) obj).getId() != this.id) {
-			return false;
-		}
-
-		return true;
-	}
-
-
-
 
 }

@@ -8,17 +8,21 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         
         <class>fr.cleverdev.models.Auteur</class>
-        <class>fr.cleverdev.models.Livre</class>
-        <class>fr.cleverdev.models.Genre</class>
         <class>fr.cleverdev.models.Couverture</class>
-        
+        <class>fr.cleverdev.models.Genre</class>
+        <class>fr.cleverdev.models.Livre</class>
+
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/biblio" />
             <property name="javax.persistence.jdbc.user" value="root" />
             <property name="javax.persistence.jdbc.password" value="" />
             
-            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
+            <!--  <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />-->
+            <!--  <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLInnoDBDialect" />-->
+            <!--  <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLMyISAMDialect" />-->
+            <!--  <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLInnoDBDialect" />-->
+            <!--  <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />-->
             <property name="hibernate.hbm2ddl.auto" value="create"/>
             
             <property name="hibernate.enable_lazy_load_no_trans" value="true"/>
