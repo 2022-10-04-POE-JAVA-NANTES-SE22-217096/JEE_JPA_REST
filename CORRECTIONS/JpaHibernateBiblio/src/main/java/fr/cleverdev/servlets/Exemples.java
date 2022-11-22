@@ -1,3 +1,4 @@
+package fr.cleverdev.servlets;
 
 
 import java.io.IOException;
@@ -19,8 +20,8 @@ import fr.cleverdev.models.Auteur;
 /**
  * Servlet implementation class Launcher
  */
-@WebServlet("/Launcher")
-public class Launcher extends HttpServlet {
+@WebServlet("/Exemples")
+public class Exemples extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	private EntityManagerFactory entityManagerFactory;
@@ -28,7 +29,7 @@ public class Launcher extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Launcher() {
+    public Exemples() {
         super();
         entityManagerFactory = Persistence.createEntityManagerFactory("biblio");
     }
