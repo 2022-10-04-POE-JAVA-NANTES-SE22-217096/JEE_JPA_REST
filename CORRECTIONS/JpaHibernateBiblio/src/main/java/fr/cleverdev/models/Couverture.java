@@ -2,10 +2,12 @@ package fr.cleverdev.models;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.persistence.PreRemove;
 import javax.persistence.Table;
 
 @Entity
@@ -19,8 +21,15 @@ public class Couverture {
 	@Column(nullable = false)
     private String description;
 
-	@OneToOne( mappedBy="couverture" )
+	@OneToOne( mappedBy="couverture", fetch=FetchType.LAZY )
 	private Livre livre;
+
+	@PreRemove
+	private void preRemove() {
+	    if(this.livre != null) {
+	    	this.livre.setCouverture(null);
+	    }
+	}
 
     public Couverture() {
     }

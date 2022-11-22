@@ -28,19 +28,19 @@ public class Livre {
 	@Column(nullable = false, length = 50)
 	private String titre;
 
-	@Column(nullable = false)
+	@Column(nullable = false, name="nb_pages")
 	private int nbPages;
 
 	@Column(length = 20)
 	private String categorie;
 
-	@ManyToOne( fetch=FetchType.LAZY, cascade=CascadeType.ALL )
+	@ManyToOne( fetch=FetchType.LAZY )
 	private Auteur auteur;
 
 	@OneToOne( fetch=FetchType.LAZY )
 	private Couverture couverture;
 
-	@ManyToMany(cascade=CascadeType.ALL)
+	@ManyToMany(cascade={CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinTable(
 		name="livre_genre",
 		joinColumns = { @JoinColumn(name="livre_id") },
@@ -107,8 +107,6 @@ public class Livre {
 		this.couverture = couverture;
 	}
 
-
-
 	public List<Genre> getGenres() {
 		return genres;
 	}
@@ -116,6 +114,17 @@ public class Livre {
 	public void setGenres(List<Genre> genres) {
 		this.genres = genres;
 	}
+
+	public void addGenre(Genre genre) {
+		this.genres.add(genre);
+		genre.getLivres().add(this);
+	}
+
+	public void removeGenre(Genre genre) {
+		this.genres.remove(genre);
+		genre.getLivres().remove(this);
+	}
+
 
 	@Override
 	public String toString() {

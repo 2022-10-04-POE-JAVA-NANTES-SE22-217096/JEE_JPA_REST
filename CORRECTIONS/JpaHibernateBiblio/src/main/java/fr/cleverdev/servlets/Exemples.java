@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import fr.cleverdev.models.Auteur;
+import fr.cleverdev.models.Livre;
 
 /**
  * Servlet implementation class Launcher
@@ -51,6 +52,8 @@ public class Exemples extends HttpServlet {
 			Auteur newAuteur = new Auteur();
 			newAuteur.setNom("Toto");
 			newAuteur.setTelephone("0606060606");
+			
+			
 			entityManager.persist(newAuteur); //Insert into Auteur(nom) Values ("Toto");
 			newAuteur.setPrenom("060606060"); // UPDATE auteur SET prenom="0606060606gdfgfdgfdg" WHERE id = 1
 
@@ -59,6 +62,8 @@ public class Exemples extends HttpServlet {
 			newAuteur2.setTelephone("0606060606");
 			entityManager.persist(newAuteur2);
 
+			System.out.println(newAuteur2.getId());
+
 			entityTransaction.commit();
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -66,12 +71,12 @@ public class Exemples extends HttpServlet {
 				entityTransaction.rollback();
 		}
 
-		
+
 		//Récupération et détachement auteur
 		Auteur auteur = entityManager.find(Auteur.class, 1L); //Select * From Auteur Where id=1;
 		entityManager.detach(auteur);
 
-		
+
 		//Modification entité
 		entityTransaction = null;
 		try {
@@ -81,7 +86,7 @@ public class Exemples extends HttpServlet {
 			auteur.setNom("NEWTest");
 
 			Auteur auteurMerged = entityManager.merge(auteur); //Sauvegarde auteur
-			
+
 			entityTransaction.commit();
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -92,8 +97,8 @@ public class Exemples extends HttpServlet {
 		//Récupération et détachement auteur
 		auteur = entityManager.find(Auteur.class, 2L); //Select * From Auteur Where id=1;
 		entityManager.detach(auteur);
-		
-		
+
+
 		//Suppression entité
 		entityTransaction = null;
 		try {
@@ -118,15 +123,15 @@ public class Exemples extends HttpServlet {
 		for(Auteur a : auteurs) {
 			System.out.println(a.getNom());
 		}
-		
-		
+
+
 		//Récupérer un élément avec paramètre
 		query = entityManager.createQuery("From Auteur Where id=:id"); //Ou "Select a From Auteur a"
-		query.setParameter("id", 1L); 
+		query.setParameter("id", 1L);
 		Auteur auteur2 = (Auteur) query.getSingleResult();
 		System.out.println(auteur2.getNom());
-		
-		
+
+
 		//Requete en SQL (pas conseillé !!!)
 		auteurs = entityManager.createNativeQuery("Select * From Auteur", Auteur.class).getResultList();
 		for(Auteur a : auteurs) {

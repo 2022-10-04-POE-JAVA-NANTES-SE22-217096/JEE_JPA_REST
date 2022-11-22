@@ -3,6 +3,7 @@ package fr.cleverdev.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,7 +32,7 @@ public class Auteur {
 	@Column(length =  60)
     private String email;
 
-	@OneToMany(mappedBy = "auteur")
+	@OneToMany(mappedBy = "auteur", cascade=CascadeType.ALL)
 	private List<Livre> livres = new ArrayList<>();
 
 

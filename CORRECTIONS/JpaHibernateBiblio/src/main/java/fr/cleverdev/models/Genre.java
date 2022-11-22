@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.PreRemove;
 import javax.persistence.Table;
 
 @Entity
@@ -24,6 +25,13 @@ public class Genre {
 
 	@ManyToMany( mappedBy="genres" )
 	private List<Livre> livres = new ArrayList<>();
+
+	@PreRemove
+	private void preRemove() {
+	    for(Livre l : this.livres) {
+	    	l.getGenres().remove(this);
+	    }
+	}
 
     public Genre() {
     }
@@ -55,6 +63,15 @@ public class Genre {
 		this.livres = livres;
 	}
 
+	public void addLivre(Livre livre) {
+		this.livres.add(livre);
+		livre.getGenres().add(this);
+	}
+
+	public void removeLivre(Livre livre) {
+		this.livres.remove(livre);
+		livre.getGenres().remove(this);
+	}
 
 	@Override
 	public boolean equals(Object obj) {
