@@ -10,7 +10,8 @@ public class Utils {
 	
 	public static Gson getSuperJson() {
 		GsonBuilder gsonBuilder = new GsonBuilder()
-				.registerTypeAdapter(Auteur.class, new AuteurAdapter());
+				.registerTypeAdapter(Auteur.class, new AuteurAdapter())
+				.serializeNulls();
 		
 		return gsonBuilder.create();
 	}
