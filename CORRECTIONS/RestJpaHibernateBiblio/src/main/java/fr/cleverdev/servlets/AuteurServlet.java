@@ -10,10 +10,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
+import fr.cleverdev.adapters.AuteurAdapter;
 import fr.cleverdev.dao.DaoException;
 import fr.cleverdev.dao.impl.DaoAuteur;
 import fr.cleverdev.models.Auteur;
+import fr.cleverdev.models.Livre;
+import fr.cleverdev.utils.Utils;
 
 
 @WebServlet("/auteur")
@@ -36,7 +42,7 @@ public class AuteurServlet extends HttpServlet {
 		String response = "Ok";
 		String contentType = "text";
 		
-		Gson gson = new Gson();
+		Gson gson = Utils.getSuperJson();
 		
 		try {
 			String idAuteur = req.getParameter("id");
@@ -64,7 +70,7 @@ public class AuteurServlet extends HttpServlet {
 
 	@Override //Création auteur
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+		
 	}
 
 	
@@ -76,7 +82,26 @@ public class AuteurServlet extends HttpServlet {
 	
 	@Override //Suppression auteur
 	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+		resp.setCharacterEncoding("UTF-8");
+		
+		int responseStatus = 200;
+		String response = "Ok";
+		String contentType = "text";
+		
+		try {
+			String idAuteur = req.getParameter("id");
+			daoAuteur.delete(Long.parseLong(idAuteur));
+		} catch(NumberFormatException e) {
+			response = "Le paramètre id n'est pas bon.";
+			responseStatus = 400;
+		} catch(DaoException e) {
+			response = "Erreur serveur.";
+			responseStatus = 500;
+		}
+		
+		resp.setContentType(contentType);
+		resp.setStatus(responseStatus);
+		resp.getWriter().write(response);
 	}
     
     
