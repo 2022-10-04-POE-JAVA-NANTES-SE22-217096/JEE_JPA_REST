@@ -16,7 +16,7 @@ public abstract class DaoObject<T> {
 	}
 
 
-	public T find(long id) {
+	public T find(long id) throws DaoException {
 		T object = null;
 
 		try {
@@ -24,8 +24,13 @@ public abstract class DaoObject<T> {
 
 		} catch(NoResultException e) {
 			e.printStackTrace();
+			throw new DaoException("Erreur DAO");
 		} finally {
 			factory.releaseEntityManager();
+		}
+		
+		if(object == null ) {
+			throw new DaoException("Elément non trouvé");
 		}
 
 		return object;
