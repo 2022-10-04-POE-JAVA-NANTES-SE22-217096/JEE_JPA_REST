@@ -15,16 +15,16 @@ public class ServiceAuteur {
 		super();
 		daoAuteur = new DaoAuteur();
 	}
-	
+
 	public String find(long id) throws ServiceException {
 		Auteur auteur;
-		
+
 		try {
 			auteur = daoAuteur.find(id);
 		} catch (DaoException e) {
 			throw new ServiceException(e.getMessage());
 		}
-		
+
 		return Utils.getSuperJson().toJson(auteur);
 	}
 
@@ -33,7 +33,7 @@ public class ServiceAuteur {
 	}
 
 	public void create(JsonObject data) throws ServiceException {
-		
+
 		try {
 			//Récupération des informations de l'auteur depuis l'objet JSON
 			String nom = Utils.getStringParameter(data, "nom", false, 2, 20);
@@ -47,7 +47,7 @@ public class ServiceAuteur {
 			auteur.setPrenom(prenom);
 			auteur.setTelephone(telephone);
 			auteur.setEmail(email);
-	
+
 			//Sauvegarde de l'auteur
 			daoAuteur.create(auteur);
 		} catch(DaoException e) {
@@ -56,20 +56,20 @@ public class ServiceAuteur {
 	}
 
 	public void update(JsonObject data) throws ServiceException {
-		try {		
+		try {
 			String id = Utils.getStringParameter(data, "nom", false, 0, 50);
 			String nom = Utils.getStringParameter(data, "nom", false, 2, 20);
 			String prenom = Utils.getStringParameter(data, "prenom", true, 0, 20);
 			String telephone = Utils.getStringParameter(data, "telephone", false, 0, 10, "^\\d+$");
 			String email= Utils.getStringParameter(data, "email", true, 0, 60, "([^.@]+)(\\.[^.@]+)*@([^.@]+\\.)+([^.@]+)");
-			
+
 			//Création de l'auteur
 			Auteur auteur = daoAuteur.find(Long.parseLong(id));
 			auteur.setNom(nom);
 			auteur.setPrenom(prenom);
 			auteur.setTelephone(telephone);
 			auteur.setEmail(email);
-	
+
 			//Sauvegarde de l'auteur
 			daoAuteur.update(auteur);
 		} catch(NumberFormatException e) {
@@ -86,8 +86,8 @@ public class ServiceAuteur {
 			throw new ServiceException(e.getMessage());
 		}
 	}
-	
-	
-	
-	
+
+
+
+
 }

@@ -28,7 +28,7 @@ public abstract class DaoObject<T> {
 		} finally {
 			factory.releaseEntityManager();
 		}
-		
+
 		if(object == null ) {
 			throw new DaoException("Elément non trouvé");
 		}

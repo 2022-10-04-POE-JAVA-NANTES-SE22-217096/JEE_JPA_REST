@@ -21,7 +21,7 @@ public class AuteurAdapter implements JsonSerializer<Auteur> {
 		json.addProperty("prenom", auteur.getPrenom());
 		json.addProperty("telephone", auteur.getTelephone());
 		json.addProperty("email", auteur.getEmail());
-		
+
 		JsonArray livresJson = new JsonArray();
 		JsonObject tmp;
 		for(Livre l : auteur.getLivres()) {
@@ -30,9 +30,9 @@ public class AuteurAdapter implements JsonSerializer<Auteur> {
 			tmp.addProperty("titre", l.getTitre());
 			livresJson.add(tmp);
 		}
-		
+
 		json.add("livres", livresJson);
-		
+
 		return json;
 	}
 

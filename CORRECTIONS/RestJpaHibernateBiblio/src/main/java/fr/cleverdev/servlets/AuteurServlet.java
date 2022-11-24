@@ -22,11 +22,11 @@ public class AuteurServlet extends HttpServlet {
 	@Override //Récupération auteur
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		resp.setCharacterEncoding("UTF-8");
-		
+
 		int responseStatus = 200;
 		String response = "Ok";
 		String contentType = "text";
-		
+
 		try {
 			String idAuteur = req.getParameter("id");
 			if(idAuteur != null) {
@@ -42,7 +42,7 @@ public class AuteurServlet extends HttpServlet {
 			response = e.getMessage();
 			responseStatus = 404;
 		}
-		
+
 		resp.setContentType(contentType);
 		resp.setStatus(responseStatus);
 		resp.getWriter().write(response);
@@ -52,11 +52,11 @@ public class AuteurServlet extends HttpServlet {
 	@Override //Création auteur
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		resp.setCharacterEncoding("UTF-8");
-		
+
 		int responseStatus = 200;
 		String response = "Ok";
 		String contentType = "text";
-		
+
 		try {
 			new ServiceAuteur().create(Utils.getJsonFromBuffer(req));
 		} catch (JsonSyntaxException e) {
@@ -66,21 +66,21 @@ public class AuteurServlet extends HttpServlet {
 			response = e.getMessage();
 			responseStatus = 500;
 		}
-		
+
 		resp.setContentType(contentType);
 		resp.setStatus(responseStatus);
 		resp.getWriter().write(response);
 	}
 
-	
+
 	@Override //Modification auteur
 	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		resp.setCharacterEncoding("UTF-8");
-		
+
 		int responseStatus = 200;
 		String response = "Ok";
 		String contentType = "text";
-		
+
 		try {
 			new ServiceAuteur().update(Utils.getJsonFromBuffer(req));
 		} catch (JsonSyntaxException e) {
@@ -90,21 +90,21 @@ public class AuteurServlet extends HttpServlet {
 			response = e.getMessage();
 			responseStatus = 500;
 		}
-		
+
 		resp.setContentType(contentType);
 		resp.setStatus(responseStatus);
 		resp.getWriter().write(response);
 	}
 
-	
+
 	@Override //Suppression auteur
 	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		resp.setCharacterEncoding("UTF-8");
-		
+
 		int responseStatus = 200;
 		String response = "Ok";
 		String contentType = "text";
-		
+
 		try {
 			String idAuteur = req.getParameter("id");
 			new ServiceAuteur().delete(Long.parseLong(idAuteur));
@@ -115,13 +115,13 @@ public class AuteurServlet extends HttpServlet {
 			response = "Erreur : "+e.getMessage();
 			responseStatus = 500;
 		}
-		
+
 		resp.setContentType(contentType);
 		resp.setStatus(responseStatus);
 		resp.getWriter().write(response);
 	}
-    
-    
-    
+
+
+
 
 }

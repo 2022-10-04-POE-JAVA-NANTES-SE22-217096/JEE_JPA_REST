@@ -12,14 +12,14 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 
 import fr.cleverdev.services.ServiceException;
-import fr.cleverdev.services.ServiceLivre;
+import fr.cleverdev.services.ServiceGenre;
 import fr.cleverdev.utils.Utils;
 
 /**
- * Servlet implementation class LivreServlet
+ * Servlet implementation class GenreServlet
  */
-@WebServlet("/livre")
-public class LivreServlet extends HttpServlet {
+@WebServlet("/genre")
+public class GenreServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -32,23 +32,23 @@ public class LivreServlet extends HttpServlet {
 		int responseStatus = 200;
 
 		try {
-			String idLivre = request.getParameter("idLivre");
-			if(idLivre != null) {
-				Long id = Long.parseLong(idLivre);
+			String idGenre = request.getParameter("idGenre");
+			if(idGenre != null) {
+				Long id = Long.parseLong(idGenre);
 				if(id > 0) {
-					responseContent = new ServiceLivre().find(id);
+					responseContent = new ServiceGenre().find(id);
 					contentType = "application/json";
 				} else {
 					responseStatus = 400;
-					responseContent = "Erreur : L'idLivre doit �tre strictement sup�rieur � 0.";
+					responseContent = "Erreur : L'idGenre doit �tre strictement sup�rieur � 0.";
 				}
 			} else {
-				responseContent = new ServiceLivre().list();
+				responseContent = new ServiceGenre().list();
 				contentType = "application/json";
 			}
 		} catch(NumberFormatException e) {
 			responseStatus = 400;
-			responseContent = "Erreur : Le format du param�tre idLivre n'est pas bon.";
+			responseContent = "Erreur : Le format du param�tre idGenre n'est pas bon.";
 		} catch(ServiceException e) {
 			responseStatus = 400;
 			responseContent = "Erreur : " +e.getMessage();
@@ -75,7 +75,7 @@ public class LivreServlet extends HttpServlet {
 		try {
 			JsonObject data = Utils.getJsonFromBuffer(request);
 
-			new ServiceLivre().create(data);
+			new ServiceGenre().create(data);
 
 		} catch(JsonSyntaxException e) {
 			responseStatus = 400;
@@ -91,8 +91,7 @@ public class LivreServlet extends HttpServlet {
 
 		response.setContentType(contentType);
 		response.setStatus(responseStatus);
-		response.getWriter().write(responseContent);
-	}
+		response.getWriter().write(responseContent);	}
 
 	/**
 	 * @see HttpServlet#doPut(HttpServletRequest, HttpServletResponse)
@@ -106,7 +105,7 @@ public class LivreServlet extends HttpServlet {
 		try {
 			JsonObject data = Utils.getJsonFromBuffer(request);
 
-			new ServiceLivre().update(data);
+			new ServiceGenre().update(data);
 
 		} catch(JsonSyntaxException e) {
 			responseStatus = 400;
@@ -135,26 +134,26 @@ public class LivreServlet extends HttpServlet {
 		int responseStatus = 200;
 
 		try {
-			String idLivre = request.getParameter("idLivre");
-			if(idLivre != null) {
-				Long id = Long.parseLong(idLivre);
+			String idGenre = request.getParameter("idGenre");
+			if(idGenre != null) {
+				Long id = Long.parseLong(idGenre);
 				if(id > 0) {
-					new ServiceLivre().delete(id);
-					responseContent = "Suppression livre OK.";
+					new ServiceGenre().delete(id);
+					responseContent = "Suppression genre OK.";
 				} else {
 					responseStatus = 400;
-					responseContent = "Erreur : L'idLivre doit �tre strictement sup�rieur � 0.";
+					responseContent = "Erreur : L'idGenre doit �tre strictement sup�rieur � 0.";
 				}
 			} else {
 				responseStatus = 400;
-				responseContent = "Erreur : Le param�tre idLivre est obligatoire.";
+				responseContent = "Erreur : Le param�tre idGenre est obligatoire.";
 			}
 		} catch(ServiceException e) {
 			responseStatus = 400;
 			responseContent = "Erreur : " +e.getMessage();
 		} catch(NumberFormatException e) {
 			responseStatus = 400;
-			responseContent = "Erreur : Le format du param�tre idLivre n'est pas bon.";
+			responseContent = "Erreur : Le format du param�tre idGenre n'est pas bon.";
 		} catch(Exception e) {
 			e.printStackTrace();
 			responseStatus = 500;
@@ -164,67 +163,6 @@ public class LivreServlet extends HttpServlet {
 		response.setContentType(contentType);
 		response.setStatus(responseStatus);
 		response.getWriter().write(responseContent);
-	}
-
-
-	@Override
-	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setCharacterEncoding("UTF-8");
-		if (request.getMethod().equalsIgnoreCase("PATCH")){
-
-			String responseContent="Ok", contentType = "text";
-			int responseStatus = 200;
-
-			try {
-				String action = request.getParameter("action");
-				if(action != null && (action.equals("addGenre") || action.equals("removeGenre"))) {
-					String idLivre = request.getParameter("idLivre");
-					String idGenre = request.getParameter("idGenre");
-					if(idLivre != null && idGenre != null) {
-
-						Long idLivreParse = Long.parseLong(idLivre);
-						Long idGenreParse = Long.parseLong(idGenre);
-
-						if(idLivreParse > 0 && idGenreParse > 0) {
-
-							if(action.equals("addGenre")) {
-								new ServiceLivre().addGenre(idLivreParse, idGenreParse);
-								responseContent = "Le genre a bien �t� ajout� au livre.";
-							} else {
-								new ServiceLivre().removeGenre(idLivreParse, idGenreParse);
-								responseContent = "Le genre a bien �t� supprim� du livre.";
-							}
-						} else {
-							responseStatus = 400;
-							responseContent = "Erreur : L'idLivre et l'idGenre doit �tre strictement sup�rieur � 0.";
-						}
-					} else {
-						responseStatus = 400;
-						responseContent = "Erreur : Le param�tre idLivre et idGenre est obligatoire.";
-					}
-				} else {
-					responseStatus = 400;
-					responseContent = "Erreur : Le param�tre action est obligatoire. 2 valeurs possibles : addGenre et removeGenre";
-				}
-			} catch(NumberFormatException e) {
-				responseStatus = 400;
-				responseContent = "Erreur : Le format du param�tre idLivre ou idGenre n'est pas bon.";
-			} catch(ServiceException e) {
-				responseStatus = 400;
-				responseContent = "Erreur : " +e.getMessage();
-			} catch(Exception e) {
-				e.printStackTrace();
-				responseStatus = 500;
-				responseContent = "Erreur : Erreur serveur.";
-			}
-
-			response.setContentType(contentType);
-			response.setStatus(responseStatus);
-			response.getWriter().write(responseContent);
-
-        } else {
-            super.service(request, response);
-        }
 	}
 
 }
