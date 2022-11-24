@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 
 import fr.cleverdev.dao.DaoException;
 import fr.cleverdev.dao.impl.DaoAuteur;
@@ -75,16 +76,30 @@ public class AuteurServlet extends HttpServlet {
 		String contentType = "text";
 		
 		try {
+				
 			//Récupération du body de la requête sous forme de String
 			StringBuffer buffer = new StringBuffer();
-			String line = null;
+			String line = null, body = "";
 			BufferedReader reader = req.getReader();
 			while((line = reader.readLine()) != null) {
 				buffer.append(line);
 			}
+			body = buffer.toString();
+			
+			/* Pareil que faire ça, StringBuffer est une classe quasi identique à String
+			 * 
+			 * 			
+			  		String body = "";
+					String line = null;
+					BufferedReader reader = req.getReader();
+					while((line = reader.readLine()) != null) {
+						body += line;
+					}
+			 * 
+			 */
 			
 			//Récupération d'un objet JAVA représentant un JSON
-			JsonObject data = JsonParser.parseString(buffer.toString()).getAsJsonObject();
+			JsonObject data = JsonParser.parseString(body).getAsJsonObject();
 			
 			//Récupération des informations de l'auteur depuis l'objet JSON
 			String nom = data.get("nom").getAsString();
@@ -101,12 +116,14 @@ public class AuteurServlet extends HttpServlet {
 
 			//Sauvegarde de l'auteur
 			daoAuteur.create(auteur);
+		} catch (JsonSyntaxException e) {
+			response = "Erreur : Le format des données n'est pas bon, veuillez utiliser du JSON.";
+			responseStatus = 400;
 		} catch (DaoException e) {
 			e.printStackTrace();
 			response = "Erreur serveur.";
 			responseStatus = 500;
 		}
-		
 		
 		resp.setContentType(contentType);
 		resp.setStatus(responseStatus);
@@ -116,7 +133,54 @@ public class AuteurServlet extends HttpServlet {
 	
 	@Override //Modification auteur
 	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		resp.setCharacterEncoding("UTF-8");
 		
+		int responseStatus = 200;
+		String response = "Ok";
+		String contentType = "text";
+		
+		try {
+				
+			//Récupération du body de la requête sous forme de String
+			StringBuffer buffer = new StringBuffer();
+			String line = null, body = "";
+			BufferedReader reader = req.getReader();
+			while((line = reader.readLine()) != null) {
+				buffer.append(line);
+			}
+			body = buffer.toString();
+			
+			//Récupération d'un objet JAVA représentant un JSON
+			JsonObject data = JsonParser.parseString(body).getAsJsonObject();
+			
+			//Récupération des informations de l'auteur depuis l'objet JSON
+			long id = data.get("id").getAsLong();
+			String nom = data.get("nom").getAsString();
+			String prenom = data.get("prenom").getAsString();
+			String telephone = data.get("telephone").getAsString();
+			String email = data.get("email").getAsString();
+			
+			//Modification de l'auteur
+			Auteur auteur = daoAuteur.find(id);
+			auteur.setNom(nom);
+			auteur.setPrenom(prenom);
+			auteur.setTelephone(telephone);
+			auteur.setEmail(email);
+
+			//Sauvegarde de l'auteur
+			daoAuteur.update(auteur);
+		} catch (JsonSyntaxException e) {
+			response = "Erreur : Le format des données n'est pas bon, veuillez utiliser du JSON.";
+			responseStatus = 400;
+		} catch (DaoException e) {
+			e.printStackTrace();
+			response = "Erreur serveur.";
+			responseStatus = 500;
+		}
+		
+		resp.setContentType(contentType);
+		resp.setStatus(responseStatus);
+		resp.getWriter().write(response);
 	}
 
 	
