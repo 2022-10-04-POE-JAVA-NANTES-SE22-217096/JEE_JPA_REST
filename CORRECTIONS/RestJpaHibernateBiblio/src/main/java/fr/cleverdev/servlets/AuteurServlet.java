@@ -1,8 +1,6 @@
 package fr.cleverdev.servlets;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,30 +8,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 
-import fr.cleverdev.dao.DaoException;
-import fr.cleverdev.dao.impl.DaoAuteur;
-import fr.cleverdev.models.Auteur;
+import fr.cleverdev.services.ServiceAuteur;
+import fr.cleverdev.services.ServiceException;
 import fr.cleverdev.utils.Utils;
 
 
 @WebServlet("/auteur")
 public class AuteurServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-	private DaoAuteur daoAuteur;
-	
-    public AuteurServlet() {
-        super();
-        daoAuteur = new DaoAuteur();
-    }
-
 
 	@Override //Récupération auteur
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -43,23 +27,19 @@ public class AuteurServlet extends HttpServlet {
 		String response = "Ok";
 		String contentType = "text";
 		
-		Gson gson = Utils.getSuperJson();
-		
 		try {
 			String idAuteur = req.getParameter("id");
 			if(idAuteur != null) {
-				Auteur auteur = daoAuteur.find(Long.parseLong(idAuteur));
-				response = gson.toJson(auteur);
+				response = new ServiceAuteur().find(Long.parseLong(idAuteur));
 			} else {
-				List<Auteur> auteurs = daoAuteur.list();
-				response = gson.toJson(auteurs);
+				response = new ServiceAuteur().list();
 			}
 			contentType = "application/json";
 		} catch(NumberFormatException e) {
 			response = "Le paramètre id n'est pas bon.";
 			responseStatus = 400;
-		} catch(DaoException e) {
-			response = "L'auteur n'a pas été trouvé.";
+		} catch(ServiceException e) {
+			response = e.getMessage();
 			responseStatus = 404;
 		}
 		
@@ -78,52 +58,12 @@ public class AuteurServlet extends HttpServlet {
 		String contentType = "text";
 		
 		try {
-				
-			//Récupération du body de la requête sous forme de String
-			StringBuffer buffer = new StringBuffer();
-			String line = null, body = "";
-			BufferedReader reader = req.getReader();
-			while((line = reader.readLine()) != null) {
-				buffer.append(line);
-			}
-			body = buffer.toString();
-			
-			/* Pareil que faire ça, StringBuffer est une classe quasi identique à String
-			 * 
-			 * 			
-			  		String body = "";
-					String line = null;
-					BufferedReader reader = req.getReader();
-					while((line = reader.readLine()) != null) {
-						body += line;
-					}
-			 * 
-			 */
-			
-			//Récupération d'un objet JAVA représentant un JSON
-			JsonObject data = JsonParser.parseString(body).getAsJsonObject();
-			
-			//Récupération des informations de l'auteur depuis l'objet JSON
-			String nom = data.get("nom").getAsString();
-			String prenom = data.get("prenom").getAsString();
-			String telephone = data.get("telephone").getAsString();
-			String email = data.get("email").getAsString();
-			
-			//Création de l'auteur
-			Auteur auteur = new Auteur();
-			auteur.setNom(nom);
-			auteur.setPrenom(prenom);
-			auteur.setTelephone(telephone);
-			auteur.setEmail(email);
-
-			//Sauvegarde de l'auteur
-			daoAuteur.create(auteur);
+			new ServiceAuteur().create(Utils.getJsonFromBuffer(req));
 		} catch (JsonSyntaxException e) {
 			response = "Erreur : Le format des données n'est pas bon, veuillez utiliser du JSON.";
 			responseStatus = 400;
-		} catch (DaoException e) {
-			e.printStackTrace();
-			response = "Erreur serveur.";
+		} catch (ServiceException e) {
+			response = e.getMessage();
 			responseStatus = 500;
 		}
 		
@@ -142,41 +82,12 @@ public class AuteurServlet extends HttpServlet {
 		String contentType = "text";
 		
 		try {
-				
-			//Récupération du body de la requête sous forme de String
-			StringBuffer buffer = new StringBuffer();
-			String line = null, body = "";
-			BufferedReader reader = req.getReader();
-			while((line = reader.readLine()) != null) {
-				buffer.append(line);
-			}
-			body = buffer.toString();
-			
-			//Récupération d'un objet JAVA représentant un JSON
-			JsonObject data = JsonParser.parseString(body).getAsJsonObject();
-			
-			//Récupération des informations de l'auteur depuis l'objet JSON
-			long id = data.get("id").getAsLong();
-			String nom = data.get("nom").getAsString();
-			String prenom = data.get("prenom").getAsString();
-			String telephone = data.get("telephone").getAsString();
-			String email = data.get("email").getAsString();
-			
-			//Modification de l'auteur
-			Auteur auteur = daoAuteur.find(id);
-			auteur.setNom(nom);
-			auteur.setPrenom(prenom);
-			auteur.setTelephone(telephone);
-			auteur.setEmail(email);
-
-			//Sauvegarde de l'auteur
-			daoAuteur.update(auteur);
+			new ServiceAuteur().update(Utils.getJsonFromBuffer(req));
 		} catch (JsonSyntaxException e) {
 			response = "Erreur : Le format des données n'est pas bon, veuillez utiliser du JSON.";
 			responseStatus = 400;
-		} catch (DaoException e) {
-			e.printStackTrace();
-			response = "Erreur serveur.";
+		} catch (ServiceException e) {
+			response = e.getMessage();
 			responseStatus = 500;
 		}
 		
@@ -196,12 +107,12 @@ public class AuteurServlet extends HttpServlet {
 		
 		try {
 			String idAuteur = req.getParameter("id");
-			daoAuteur.delete(Long.parseLong(idAuteur));
+			new ServiceAuteur().delete(Long.parseLong(idAuteur));
 		} catch(NumberFormatException e) {
 			response = "Le paramètre id n'est pas bon.";
 			responseStatus = 400;
-		} catch(DaoException e) {
-			response = "Erreur serveur.";
+		} catch(ServiceException e) {
+			response = "Erreur : "+e.getMessage();
 			responseStatus = 500;
 		}
 		
