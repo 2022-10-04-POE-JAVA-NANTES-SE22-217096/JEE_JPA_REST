@@ -40,7 +40,7 @@ public class Livre {
 	@OneToOne( fetch=FetchType.LAZY )
 	private Couverture couverture;
 
-	@ManyToMany(cascade={CascadeType.PERSIST, CascadeType.MERGE})
+	@ManyToMany(cascade={CascadeType.MERGE})
 	@JoinTable(
 		name="livre_genre",
 		joinColumns = { @JoinColumn(name="livre_id") },
